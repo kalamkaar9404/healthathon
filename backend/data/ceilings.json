@@ -1,0 +1,44 @@
+{
+  "doxorubicin": {
+    "ceiling": 550,
+    "unit": "mg/m2",
+    "basis": "Cumulative cardiotoxicity; risk of irreversible cardiomyopathy rises steeply above this.",
+    "caution_at": 400
+  },
+  "daunorubicin": {
+    "ceiling": 550,
+    "unit": "mg/m2",
+    "basis": "Cumulative cardiotoxicity.",
+    "caution_at": 400
+  },
+  "epirubicin": {
+    "ceiling": 900,
+    "unit": "mg/m2",
+    "basis": "Cumulative cardiotoxicity.",
+    "caution_at": 700
+  },
+  "idarubicin": {
+    "ceiling": 150,
+    "unit": "mg/m2",
+    "basis": "Cumulative cardiotoxicity.",
+    "caution_at": 110
+  },
+  "mitoxantrone": {
+    "ceiling": 140,
+    "unit": "mg/m2",
+    "basis": "Cumulative cardiotoxicity.",
+    "caution_at": 100
+  },
+  "cisplatin": {
+    "ceiling": 300,
+    "unit": "mg/m2",
+    "basis": "Cumulative peripheral neuropathy and ototoxicity. A soft threshold, not an absolute cap.",
+    "caution_at": 200
+  },
+  "bleomycin": {
+    "ceiling": 400,
+    "unit": "units",
+    "basis": "Cumulative pulmonary fibrosis risk.",
+    "caution_at": 300
+  }
+}

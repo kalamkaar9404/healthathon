@@ -1,0 +1,381 @@
+/* CancerCare — an oncology chart, not a dashboard.
+   Clinical records are ruled grids: cycles across, parameters down, values
+   against reference bands. The interface keeps that form rather than chopping
+   it into cards. Cards appear only where the content really is a set of
+   discrete objects: source documents and alerts. */
+
+:root {
+  --paper:  #f3f4f1;   /* cool printout stock */
+  --panel:  #ffffff;
+  --rule:   #d3d6cf;
+  --rule-2: #e6e8e2;
+  --ink:    #1a2b30;   /* deep blue-green, chosen rather than a tinted black */
+  --ink-2:  #5d6b70;
+  --ink-3:  #8b979b;
+  --flag:   #8c2f1d;   /* deep brick */
+  --flag-bg:#f6e9e5;
+  --ok:     #2d6150;
+  --mark:   #b07d1a;   /* ochre: caution, dose fill */
+  --mark-bg:#f4ecd8;
+  --band:   #eceade;
+
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --serif: Spectral, Georgia, "Times New Roman", serif;
+
+  --rail-w: 332px;
+  --bar-h: 60px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { font-weight: 500; margin: 0; letter-spacing: -0.01em; }
+
+button { font: inherit; color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* ---------- top bar ---------- */
+
+.bar {
+  height: var(--bar-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 20px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--rule);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.bar-left { display: flex; align-items: baseline; gap: 14px; min-width: 0; }
+
+.wordmark {
+  font-family: var(--serif);
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.bar-sub {
+  font-size: 13.5px;
+  color: var(--ink-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bar-right { display: flex; align-items: center; gap: 12px; flex: none; }
+
+.subject { font-family: var(--mono); font-size: 12.5px; color: var(--ink-2); }
+.subject b { font-weight: 500; color: var(--ink); }
+
+.btn {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 7px 15px;
+  border: 1px solid var(--ink);
+  border-radius: 3px;
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+}
+
+.btn:hover:not(:disabled) { background: #122024; }
+.btn:disabled { opacity: 0.32; cursor: default; }
+
+.btn-quiet {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--rule);
+}
+
+.btn-quiet:hover { border-color: var(--ink-2); background: transparent; }
+
+/* ---------- shell ---------- */
+
+.shell {
+  display: grid;
+  grid-template-columns: var(--rail-w) minmax(0, 1fr);
+  min-height: calc(100vh - var(--bar-h));
+}
+
+.rail {
+  border-right: 1px solid var(--rule);
+  background: var(--panel);
+  padding: 20px 18px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.rail-head {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 600;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 13px;
+}
+
+.rail-note { font-size: 13.5px; color: var(--ink-2); margin: 0 0 10px; }
+
+/* ---------- dropzone ---------- */
+
+.dropzone {
+  border: 1px dashed var(--rule);
+  border-radius: 3px;
+  padding: 20px 16px;
+  text-align: center;
+  cursor: pointer;
+  background: var(--paper);
+}
+
+.dropzone:hover, .dropzone.over { border-color: var(--ink-2); background: var(--band); }
+.drop-main { margin: 0 0 5px; font-size: 15px; }
+.drop-sub { margin: 0; font-size: 12.5px; color: var(--ink-3); line-height: 1.45; }
+
+/* ---------- document list ---------- */
+
+.doclist { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+
+.doc {
+  border: 1px solid var(--rule-2);
+  border-left: 3px solid var(--rule);
+  border-radius: 3px;
+  padding: 10px 12px;
+  background: var(--panel);
+}
+
+.doc.done { border-left-color: var(--ok); }
+
+.doc-name {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight: 500;
+  word-break: break-all;
+  line-height: 1.4;
+}
+
+.doc-meta {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-3);
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
+
+/* ---------- flags ---------- */
+
+.flaglist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+
+.flag {
+  border-left: 3px solid var(--mark);
+  background: var(--mark-bg);
+  border-radius: 0 3px 3px 0;
+  padding: 10px 12px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.flag.attention { border-left-color: var(--flag); background: var(--flag-bg); }
+.flag-kind { font-family: var(--mono); font-size: 11px; color: var(--ink-2); display: block; margin-bottom: 3px; }
+
+.redactions { list-style: none; margin: 0; padding: 0; font-family: var(--mono); font-size: 11.5px; color: var(--ink-2); }
+.redactions li { padding: 3px 0; border-bottom: 1px solid var(--rule-2); display: flex; justify-content: space-between; gap: 10px; }
+.redactions li span:last-child { color: var(--ink-3); }
+
+/* ---------- sheet ---------- */
+
+.sheet { padding: 26px 30px 90px; min-width: 0; }
+
+.empty { max-width: 46ch; padding: 60px 0 0; }
+.empty-head { font-size: 31px; font-weight: 500; margin-bottom: 14px; letter-spacing: -0.02em; }
+.empty-body { font-size: 16.5px; color: var(--ink-2); margin: 0 0 14px; }
+.empty .btn { margin-top: 10px; }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 20px 22px 22px;
+  margin-bottom: 20px;
+}
+
+.panel-head { padding-bottom: 12px; margin-bottom: 16px; border-bottom: 1px solid var(--rule); }
+.panel-head h2 { font-size: 19px; font-weight: 600; }
+.panel-note { font-size: 13.5px; color: var(--ink-2); margin: 4px 0 0; max-width: 78ch; }
+
+/* ---------- dose tracks ---------- */
+
+.doses { display: flex; flex-direction: column; gap: 17px; }
+
+.dose { display: grid; grid-template-columns: 170px minmax(0, 1fr) 190px; gap: 16px; align-items: center; }
+
+.dose-name { font-size: 16px; }
+.dose-name i { display: block; font-family: var(--mono); font-size: 11.5px; font-style: normal; color: var(--ink-3); }
+
+.track {
+  position: relative;
+  height: 20px;
+  background: var(--band);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.fill { position: absolute; inset: 0 auto 0 0; background: var(--ok); width: 0; }
+.fill.warn { background: var(--mark); }
+.fill.over { background: var(--flag); }
+
+/* ceiling tick: the line the dose must not cross */
+.tick { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink); }
+
+.dose-figures { font-family: var(--mono); font-size: 12.5px; text-align: right; line-height: 1.5; }
+.dose-figures b { font-weight: 600; font-variant-numeric: tabular-nums; }
+.dose-figures span { display: block; color: var(--ink-3); }
+.dose-figures .uncapped { color: var(--ink-3); }
+
+/* ---------- grids ---------- */
+
+.gridwrap { overflow-x: auto; }
+
+.grid { border-collapse: collapse; font-family: var(--mono); font-size: 13px; width: 100%; }
+
+.grid th, .grid td {
+  border-bottom: 1px solid var(--rule-2);
+  padding: 8px 10px;
+  text-align: center;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.grid thead th { border-bottom: 1px solid var(--rule); color: var(--ink-2); font-weight: 500; font-size: 12px; }
+.grid th.row-label, .grid td.row-label { text-align: left; font-family: var(--serif); font-size: 15px; min-width: 215px; }
+.grid td.row-label i { display: block; font-family: var(--mono); font-size: 11px; font-style: normal; color: var(--ink-3); }
+.grid td.none { color: var(--ink-3); }
+
+.g1 { color: var(--ok); }
+.g2 { color: var(--mark); }
+.g3, .g4, .g5 { color: var(--flag); font-weight: 600; }
+
+.dir { font-family: var(--mono); font-size: 12px; text-align: left !important; }
+.dir.worsening, .dir.rising { color: var(--flag); }
+.dir.improving, .dir.falling { color: var(--mark); }
+.dir.stable { color: var(--ink-3); }
+
+.oor { color: var(--flag); font-weight: 600; }
+
+/* ---------- ledger ---------- */
+
+.ledger { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+
+.ledger tr { border-bottom: 1px solid var(--rule-2); cursor: pointer; }
+.ledger tr:last-child { border-bottom: none; }
+.ledger tr:hover { background: var(--paper); }
+.ledger tr[aria-selected="true"] { background: var(--band); }
+
+.ledger td { padding: 7px 10px; vertical-align: baseline; }
+
+.l-date { font-family: var(--mono); font-size: 12.5px; color: var(--ink-2); white-space: nowrap; width: 104px; }
+.l-cycle { font-family: var(--mono); font-size: 12.5px; color: var(--ink-3); width: 54px; white-space: nowrap; }
+.l-kind { font-family: var(--mono); font-size: 11.5px; color: var(--ink-3); width: 86px; }
+.l-label { font-weight: 500; width: 31%; }
+.l-detail { font-family: var(--mono); font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.l-conf { width: 108px; text-align: right; font-family: var(--mono); font-size: 12px; color: var(--ink-3); white-space: nowrap; }
+
+.pip { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--ok); margin-right: 6px; vertical-align: middle; }
+.pip.mid { background: var(--mark); }
+.pip.held { background: transparent; border: 1.5px solid var(--flag); }
+
+.ledger tr.held .l-label,
+.ledger tr.held .l-detail { color: var(--ink-3); }
+
+.held-mark { font-family: var(--mono); font-size: 11.5px; color: var(--flag); }
+
+/* ---------- inspector ---------- */
+
+.inspector {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 372px;
+  max-width: calc(100vw - 40px);
+  background: var(--panel);
+  border: 1px solid var(--ink);
+  border-radius: 3px;
+  box-shadow: 0 10px 28px rgba(26, 43, 48, 0.17);
+  z-index: 30;
+}
+
+.insp-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.insp-head h2 { font-size: 15.5px; font-weight: 600; }
+
+.insp-close {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: none;
+  border: none;
+  color: var(--ink-2);
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
+.insp-close:hover { color: var(--ink); }
+
+.insp-body { margin: 0; padding: 12px 14px 15px; display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 7px 12px; font-size: 13.5px; }
+.insp-body dt { font-family: var(--mono); font-size: 11.5px; color: var(--ink-3); padding-top: 2px; }
+.insp-body dd { margin: 0; font-variant-numeric: tabular-nums; }
+.insp-body dd.quote { font-family: var(--mono); font-size: 12px; background: var(--paper); border-left: 2px solid var(--rule); padding: 6px 8px; white-space: pre-wrap; }
+.insp-body dd.reason { color: var(--flag); }
+
+/* The one orchestrated moment: rows arrive in sequence when the record is
+   built, so you see it assemble. Nothing else on the page animates. */
+@keyframes settle {
+  from { opacity: 0; transform: translateY(3px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.settling { animation: settle 260ms ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .settling { animation: none; }
+}
+
+@media (max-width: 1040px) {
+  .shell { grid-template-columns: 1fr; }
+  .rail { border-right: none; border-bottom: 1px solid var(--rule); }
+  .sheet { padding: 20px 16px 70px; }
+  .bar { flex-wrap: wrap; height: auto; padding: 10px 16px; gap: 10px; position: static; }
+  .bar-sub { display: none; }
+  .dose { grid-template-columns: 1fr; gap: 7px; }
+  .dose-figures { text-align: left; }
+  .inspector { right: 10px; left: 10px; width: auto; }
+}

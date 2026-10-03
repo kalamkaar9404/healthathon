@@ -1,0 +1,27 @@
+Sanjeevani Cancer Centre
+Department of Medical Oncology
+
+Patient Name: Lakshmi Narayanan
+UHID: SCC/2026/04417
+
+Date: 02/04/2026
+Cycle No: 5
+
+CHEMOTHERAPY ORDER
+Adrim 60 mg/m2 IV
+Endoxan 600 mg/m2 IV
+
+Pre-cycle bloods
+Haemoglobin : 9.7 g/dL (12.0-16.0)
+Platelet count : 141 10^9/L
+ANC : 1.4 10^9/L
+Serum creatinine : 1.6 mg/dL (0.6-1.3)
+SGPT : 38 U/L
+
+Toxicity review
+Peripheral neuropathy - Grade 3
+Fatigue - Grade 2
+
+Cisplatin withheld this cycle pending neurology opinion.
+
+Reviewed by Dr. Anita Raghavan

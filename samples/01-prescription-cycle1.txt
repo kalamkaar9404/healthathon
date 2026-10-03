@@ -1,0 +1,30 @@
+Sanjeevani Cancer Centre
+Department of Medical Oncology
+
+Patient Name: Lakshmi Narayanan
+UHID: SCC/2026/04417
+Phone: 9845012233
+Age: 54
+Sex: F
+Weight 62 kg
+Height 158 cm
+
+Date: 08/01/2026
+Cycle No: 1
+
+Diagnosis: Carcinoma breast, left, post mastectomy
+
+CHEMOTHERAPY ORDER
+Adrim 60 mg/m2 IV
+Cisplat 60 mg/m2 IV
+Endoxan 600 mg/m2 IV
+
+Pre-cycle bloods
+Haemoglobin : 11.8 g/dL (12.0-16.0)
+Platelet count : 232 10^9/L
+ANC : 3.4 10^9/L
+Serum creatinine : 0.9 mg/dL (0.6-1.3)
+SGPT : 24 U/L
+
+Reviewed by Dr. Anita Raghavan
+Next review in 3 weeks.
